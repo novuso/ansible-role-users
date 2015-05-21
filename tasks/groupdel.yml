@@ -1,0 +1,20 @@
+---
+- name: "username groups absent"
+  sudo: yes
+  no_log: True
+  group:
+    name: "{{ item.name }}"
+    state: absent
+  with_items: users
+  when: ((item.name is defined and item.name != 'root') and
+        (item.state is defined and item.state == 'absent'))
+
+- name: "common groups absent"
+  sudo: yes
+  no_log: True
+  group:
+    name: "{{ item.name }}"
+    state: absent
+  with_items: users_groups
+  when: ((item.name is defined and item.name != 'root') and
+        (item.state is defined and item.state == 'absent'))

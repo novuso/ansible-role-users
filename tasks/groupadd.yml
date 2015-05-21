@@ -1,0 +1,25 @@
+---
+- name: "common groups present"
+  sudo: yes
+  no_log: True
+  group:
+    name: "{{ item.name }}"
+    state: present
+    gid: "{{ item.gid | default(omit) }}"
+    system: "{{ item.system | default('no') }}"
+  with_items: users_groups
+  when: ((item.name is defined and item.name != 'root') and
+        (item.state is undefined or (item.state is defined and item.state != 'absent')))
+
+- name: "username groups present"
+  sudo: yes
+  no_log: True
+  group:
+    name: "{{ item.name }}"
+    state: present
+    gid: "{{ item.uid }}"
+  with_items: users
+  when: ((users_create_username_group) and
+        (item.name is defined and item.name != 'root') and
+        (item.state is undefined or (item.state is defined and item.state != 'absent')) and
+        (item.password is defined and item.uid is defined))

@@ -1,0 +1,25 @@
+---
+- name: "authorized keys present"
+  sudo: yes
+  no_log: True
+  authorized_key:
+    key: '{{ "\n".join(item.ssh_keys) | string }}'
+    user: "{{ item.name }}"
+    state: present
+  with_items: users
+  when: ((item.name is defined and item.name != 'root') and
+        (item.state is undefined or (item.state is defined and item.state != 'absent')) and
+        (item.ssh_keys is defined and item.ssh_keys))
+
+- name: "authorized keys absent"
+  sudo: yes
+  no_log: True
+  file:
+    dest: "{{ item.home | default(users_default_home_prefix + '/' + item.name) }}/.ssh/authorized_keys"
+    state: absent
+  with_items: users
+  when: (((item.name is defined and item.name != 'root') and
+        (item.state is undefined or (item.state is defined and item.state != 'absent')) and
+        (item.sshkeys is defined and not item.sshkeys)) or
+        ((item.name is defined and item.name != 'root') and
+        (item.state is defined and item.state == 'absent')))

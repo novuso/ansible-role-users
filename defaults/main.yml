@@ -1,0 +1,47 @@
+---
+# http://docs.ansible.com/faq.html#how-do-i-generate-crypted-passwords-for-the-user-module
+# users
+# - name: "bob"                           #required
+#   password: "$6$sOXJMLjMRlE..."         #required
+#   uid: "3000"                           #required
+#   state: present                        #default
+#   shell: "{{ users_default_shell }}"    #default
+#   createhome: yes                       #default
+#   home: "/home/bob"                     #default
+#   comment: "Bob Miller"                 #omitted
+#   force_del: no                         #omitted
+#   generate_ssh_key: no                  #default
+#   ssh_key_bits: 4096                    #default
+#   ssh_key_comment: name@$HOSTNAME       #default
+#   ssh_key_file: "~/.ssh/id_rsa"         #omitted
+#   ssh_key_passphrase: "secret"          #omitted
+#   ssh_key_type: "rsa"                   #omitted
+#   move_home: no                         #default
+#   remove: no                            #omitted
+#   system: no                            #default
+#   update_password: always               #default other option is on_create
+#   append_groups: yes                    #default
+#   groups: ["sudo","canssh"]             #omitted
+#   ssh_keys: ["sshpub1","sshpub2"]       #omitted
+users: []
+# users_groups
+# - name: "canssh"   #required
+#   state: present   #default
+#   gid: 100         #omitted
+#   system: no       #default
+users_groups: []
+# users_default_shell
+# the default shell for users when not specified per user
+users_default_shell: "/bin/bash"
+# users_create_home_dir
+# whether or not to create home directories
+users_create_home_dir: "yes"
+# users_default_home_prefix
+# the home directory prefix for user home directories
+users_default_home_prefix: "/home"
+# users_create_username_group
+# whether or not users group should match username
+users_create_username_group: true
+# users_default_group
+# if users_create_username_group is false, the users group
+users_default_group: "users"

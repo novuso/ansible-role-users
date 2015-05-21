@@ -1,0 +1,46 @@
+---
+- include: "groupadd.yml"
+
+- name: "user accounts"
+  sudo: yes
+  no_log: True
+  user:
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    uid: "{{ item.uid }}"
+    state: "{{ item.state | default('present') }}"
+    shell: "{{ item.shell | default(users_default_shell) }}"
+    createhome: "{{ item.createhome | default(users_create_home_dir) }}"
+    home: "{{ item.home | default(users_default_home_prefix + '/' + item.name) }}"
+    group: "{{ item.name if users_create_username_group else users_default_group }}"
+    comment: "{{ item.comment | default(omit) }}"
+    force: "{{ item.force_del | default(omit) }}"
+    generate_ssh_key: "{{ item.generate_ssh_key | default('no') }}"
+    ssh_key_bits: "{{ item.ssh_key_bits | default(4096) }}"
+    ssh_key_comment: "{{ item.ssh_key_comment | default(item.name + '@' + ansible_hostname) }}"
+    ssh_key_file: "{{ item.ssh_key_file | default(omit) }}"
+    ssh_key_passphrase: "{{ item.ssh_key_passphrase | default(omit) }}"
+    ssh_key_type: "{{ item.ssh_key_type | default(omit) }}"
+    move_home: "{{ item.move_home | default('no') }}"
+    remove: "{{ item.remove | default(omit) }}"
+    system: "{{ item.system | default('no') }}"
+    update_password: "{{ item.update_password | default('always') }}"
+  with_items: users
+  when: item.name is defined and item.password is defined and item.uid is defined
+
+- name: "user assigned groups"
+  sudo: yes
+  no_log: True
+  user:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+    groups: "{{ item.groups | join(',') }}"
+    append: "{{ item.append_groups | default('yes') }}"
+  with_items: users
+  when: ((item.groups is defined and item.groups) and
+        (item.name is defined and item.name != 'root') and
+        (item.state is undefined or (item.state is defined and item.state != 'absent')) and
+        (item.password is defined and item.uid is defined))
+
+- include: "groupdel.yml"
+- include: "authkeys.yml"

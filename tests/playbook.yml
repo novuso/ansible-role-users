@@ -1,0 +1,10 @@
+---
+- hosts: all
+  vars:
+  - users:
+    - name: "bob"
+      password: "$6$L9QhtLnh/$IOl4UR7r7yjAID3MztDBEkxTrFTdxx4KQcrORFkKWLkK6LT45PZoghUSuSX71ufR0oA6etkZ5xCyZ/m0FuHlA."
+      uid: "3001"
+  - users_create_username_group: false
+  roles:
+  - ansible-role-users
