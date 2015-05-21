@@ -1,6 +1,8 @@
 # Ansible Role: Users
 
+[![Ansible Galaxy](http://img.shields.io/badge/galaxy-novuso.users-000000.svg)](https://galaxy.ansible.com/list#/roles/3871)
 [![MIT License](http://img.shields.io/badge/license-MIT-003399.svg)](http://opensource.org/licenses/MIT)
+[![Build Status](https://travis-ci.org/novuso/ansible-role-users.svg)](https://travis-ci.org/novuso/ansible-role-users)
 
 An Ansible role that manages users on Ubuntu 14.04
 
